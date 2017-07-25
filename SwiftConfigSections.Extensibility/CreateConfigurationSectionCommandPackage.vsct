@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <Extern href="stdidcmd.h"/>
+
+  <Extern href="vsshlids.h"/>
+
+  <Commands package="guidCreateConfigurationSectionCommandPackage">
+    <Groups>
+      <Group guid="guidCreateConfigurationSectionCommandPackageCmdSet" id="MyMenuGroup" priority="0xEFFF">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE"/>
+      </Group>
+    </Groups>
+
+    <Buttons>
+      <Button guid="guidCreateConfigurationSectionCommandPackageCmdSet" id="CreateConfigurationSectionCommandId" priority="0x0100" type="Button">
+        <Parent guid="guidCreateConfigurationSectionCommandPackageCmdSet" id="MyMenuGroup" />
+        <Icon guid="guidImages" id="bmpPic1" />
+        <Strings>
+          <ButtonText>Create ConfigurationSection</ButtonText>
+        </Strings>
+        <CommandFlag>DynamicVisibility</CommandFlag>
+      </Button>
+    </Buttons>
+
+    <Bitmaps>
+      <Bitmap guid="guidImages" href="Resources\CreateConfigurationSectionCommand.png" usedList="bmpPic1"/>
+    </Bitmaps>
+  </Commands>
+
+  <Symbols>
+    <GuidSymbol name="guidCreateConfigurationSectionCommandPackage" value="{7d9b7ccb-af85-4fd5-b6a1-662f4023e65e}" />
+
+    <GuidSymbol name="guidCreateConfigurationSectionCommandPackageCmdSet" value="{15e2f49a-9e6b-4858-bd20-e771a44b7c13}">
+      <IDSymbol name="MyMenuGroup" value="0x1020" />
+      <IDSymbol name="CreateConfigurationSectionCommandId" value="0x0100" />
+    </GuidSymbol>
+
+    <GuidSymbol name="guidImages" value="{c565ada5-336e-410e-9731-cb695a6e9538}" >
+      <IDSymbol name="bmpPic1" value="1" />
+    </GuidSymbol>
+  </Symbols>
+</CommandTable>
