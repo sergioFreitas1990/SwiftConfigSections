@@ -6,9 +6,9 @@
 
 using EnvDTE;
 using EnvDTE80;
-using IndependentUtils.Configuration.Generation;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.TextTemplating.VSHost;
+using SwiftConfigSections.Library;
 using System;
 using System.ComponentModel.Design;
 using System.IO;

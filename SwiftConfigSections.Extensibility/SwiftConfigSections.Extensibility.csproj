@@ -60,11 +60,13 @@
     <Compile Include="EventTextTEmplateingCallback.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\LICENSE">
-      <Link>Resources\LICENSE</Link>
-    </Content>
     <None Include="Key.snk" />
     <None Include="packages.config" />
+    <Content Include="LICENSE.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <None Include="Resources\LICENSE" />
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>
@@ -193,15 +195,13 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\IndependentUtils\IndependentUtils.Configuration\IndependentUtils.Configuration.csproj">
-      <Project>{b3bdcbcd-a1d7-47a9-b991-1e2b0b8e0321}</Project>
-      <Name>IndependentUtils.Configuration</Name>
-    </ProjectReference>
+    <EmbeddedResource Include="ConfigurationElementsGeneratorTemplate.t4" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ConfigurationElementsGeneratorTemplate.t4">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <ProjectReference Include="..\SwiftConfigSections.Library\SwiftConfigSections.Library.csproj">
+      <Project>{1b9e59b1-a578-4410-93d6-515f1aa649fe}</Project>
+      <Name>SwiftConfigSections.Library</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />

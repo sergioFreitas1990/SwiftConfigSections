@@ -2,8 +2,8 @@
 <#@ output extension=".cs" #>
 <#@ parameter type="System.String" name="assemblyName" #>
 <#@ parameter type="System.String" name="namespaceName" #>
-<#@ parameter type="IndependentUtils.Configuration.Generation.Models.ConfigurationModel" name="model" #>
-<#@ assembly name="IndependentUtils.Configuration.dll" #>
+<#@ parameter type="SwiftConfigSections.Library.Models.ConfigurationModel" name="model" #>
+<#@ assembly name="SwiftConfigSections.Library.dll" #>
 <#@ assembly name="System.Core" #>
 <#@ assembly name="System.Configuration" #>
 <#@ import namespace="System.Linq" #>

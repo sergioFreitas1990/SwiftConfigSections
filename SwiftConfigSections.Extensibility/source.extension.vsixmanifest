@@ -4,7 +4,7 @@
     <Identity Id="a6272a45-c5f5-471c-b948-289d42af3b60" Version="1.0" Language="en-US" Publisher="Sérgio Freitas" />
     <DisplayName>Swift Config Sections Extensibility</DisplayName>
     <Description xml:space="preserve">Creates configuration sections from simple interfaces saving a lot of repetition code.</Description>
-    <License>Resources\LICENSE</License>
+    <License>LICENSE.txt</License>
     <Icon>Icon.png</Icon>
     <PreviewImage>Preview.png</PreviewImage>
     <Tags>app.config, web.config, configuration, sections</Tags>

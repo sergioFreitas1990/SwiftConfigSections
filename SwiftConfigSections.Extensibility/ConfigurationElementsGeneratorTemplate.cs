@@ -1,9 +1,10 @@
-﻿using IndependentUtils.Configuration.Generation.Models;
-using Microsoft.VisualStudio.TextTemplating;
+﻿using Microsoft.VisualStudio.TextTemplating;
 using Microsoft.VisualStudio.TextTemplating.VSHost;
+using SwiftConfigSections.Library.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 
 namespace SwiftConfigSections.Extensibility
 {
@@ -13,6 +14,8 @@ namespace SwiftConfigSections.Extensibility
         /// The template that generates configuration sections.
         /// </sumary> 
         private const string TemplateName = "ConfigurationElementsGeneratorTemplate.t4";
+
+        private static readonly Assembly Assembly = Assembly.GetExecutingAssembly();
 
         private readonly IDictionary<string, object> _parameters;
 
@@ -36,7 +39,7 @@ namespace SwiftConfigSections.Extensibility
         /// <summary>
         /// Uses the template and generates the model.
         /// </summary>
-        private static string GenerateContentFromTemplate(ITextTemplating t4, 
+        private static string GenerateContentFromTemplate(ITextTemplating t4,
             string templateName, IDictionary<string, object> parameters)
         {
             var host = t4 as ITextTemplatingSessionHost;
@@ -54,8 +57,22 @@ namespace SwiftConfigSections.Extensibility
             callBacks.OnErrorCallback += (warning, message, line, column) =>
                 throw new InvalidOperationException($"l{line},{column}: {message}");
 
-            return t4.ProcessTemplate(templateName,
-                File.ReadAllText(templateName), callBacks);
+            // Get the file
+            var file = ReadResourceFile(templateName);
+
+            return t4.ProcessTemplate(templateName, file, callBacks);
+        }
+
+        private static string ReadResourceFile(string fileName)
+        {
+            var path = $"SwiftConfigSections.Extensibility.{fileName}";
+            using (var stream = Assembly.GetManifestResourceStream(path))
+            {
+                using (var reader = new StreamReader(stream))
+                {
+                    return reader.ReadToEnd();
+                }
+            }
         }
     }
 }
