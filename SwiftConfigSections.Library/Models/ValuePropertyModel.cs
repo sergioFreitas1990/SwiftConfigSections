@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SwiftConfigSections.Library.Models
 {
@@ -14,6 +13,6 @@ namespace SwiftConfigSections.Library.Models
 
         public string ConfigurationPropertyName { get; set; }
 
-        public KeyValuePair<string, object>[] Options { get; set; }
+        public KeyValuePairModel<object>[] Options { get; set; }
     }
 }

@@ -121,47 +121,71 @@ namespace SwiftConfigSections.Extensibility
 
             var selectedFileName = selectedFile.Name;
             var className = selectedFileName.Substring(0,
-                selectedFileName.IndexOf('.'));
+                selectedFileName.LastIndexOf('.'));
 
             // Gets the specific type from the project.
             var project = GetSelectedProject(dte);
-            var projectAssembly = LoadAssemblyFromProject(project);
+            var projectAssemblyFile = GetAssemblyFileFromProject(project);
 
-            if (projectAssembly == null)
+            if (projectAssemblyFile == null)
             {
                 throw new InvalidOperationException(
                     $"Could not find a .dll associated with {project.Name}!");
             }
 
-            var interfaceType = projectAssembly
-                .GetTypes()
-                .FirstOrDefault(t => t.Name == className);
-
-            if (interfaceType == null)
+            var arguments = new GenerateTemplateArguments
             {
-                throw new InvalidOperationException(
-                    $"Make sure that the file {selectedFileName} is compiled and has " +
-                    $"an interface named {className}.");
-            }
+                InterfaceName = className,
+                SelectedFileName = selectedFileName
+            };
+            var templateParameters = AppDomainRunner.Run(projectAssemblyFile.FullName, arguments,
+                GenerateTemplate);
 
             var destinationDirecotry = selectedFile.Directory;
-
             var fileFullName = Path.Combine(
-                destinationDirecotry.FullName,
-                $"{interfaceType.Name}Implementation.cs");
+                destinationDirecotry.FullName, $"{className}Implementation.cs");
 
-            // Generate the file from the T4 Text Template
-            var model = SectionGenerator.Generate(interfaceType);
-            var template = new ConfigurationElementsGeneratorTemplate(
-                interfaceType.Assembly.FullName,
-                interfaceType.Namespace,
-                model);
-
-            var fileContents = template.Create(T4);
+            var templateGenerator = new ConfigurationElementsGeneratorTemplate(
+                templateParameters.AssemblyName, 
+                templateParameters.NamespaceName,
+                templateParameters.Model
+            );
+            var fileContents = templateGenerator.Create(T4);
             File.WriteAllText(fileFullName, fileContents);
 
             // Add the project item.
             project.ProjectItems.AddFromFile(fileFullName);
+        }
+
+        [Serializable]
+        private class GenerateTemplateArguments
+        {
+            public string InterfaceName { get; set; }
+            public string SelectedFileName { get; set; }
+        }
+
+        private static GenerateContentFromTemplateParameters GenerateTemplate(
+            Assembly assembly, GenerateTemplateArguments arguments)
+        {
+            var interfaceType = assembly
+                .GetTypes()
+                .FirstOrDefault(t => t.Name == arguments.InterfaceName);
+
+            if (interfaceType == null)
+            {
+                throw new InvalidOperationException(
+                    $"Make sure that the file {arguments.SelectedFileName} is compiled and has " +
+                    $"an interface named {arguments.InterfaceName}.");
+            }
+
+            // Generate the file from the T4 Text Template
+            var model = SectionGenerator.Generate(interfaceType);
+            return new GenerateContentFromTemplateParameters
+            {
+                AssemblyName = interfaceType.Assembly.FullName,
+                NamespaceName = interfaceType.Namespace,
+                Model = model
+            };
         }
 
         /// <summary>
@@ -171,7 +195,7 @@ namespace SwiftConfigSections.Extensibility
         /// <returns>
         /// The loaded assembly or null if not found (probably not compiled).
         /// </returns>
-        public static Assembly LoadAssemblyFromProject(Project project)
+            public static FileInfo GetAssemblyFileFromProject(Project project)
         {
             // TODO: Probably the AssemblyInfo file could be read instead?
             var projectNameDll = $"{project.Name}.dll";
@@ -181,12 +205,7 @@ namespace SwiftConfigSections.Extensibility
                     SearchOption.AllDirectories)
                 .FirstOrDefault();
 
-            if (dllFile == null)
-            {
-                return null;
-            }
-
-            return Assembly.LoadFrom(dllFile);
+            return new FileInfo(dllFile);
         }
 
         private FileInfo ValidateCommandInvocation(DTE2 dte,

@@ -130,7 +130,12 @@ namespace SwiftConfigSections.Library
                 currModel.PropertyTypeName = currProperty.PropertyType.FullName;
                 currModel.ConfigurationPropertyName = currPropertyAttribute.Name;
                 currModel.PropertyName = currProperty.Name;
-                currModel.Options = currPropertyAttribute.AdditionalSettings.ToArray();
+                currModel.Options = currPropertyAttribute.AdditionalSettings.Select(t => 
+                    new KeyValuePairModel<object>
+                    {
+                        Key = t.Key,
+                        Value = t.Value
+                    }).ToArray();
             }
 
             types.Add(new TypeModel

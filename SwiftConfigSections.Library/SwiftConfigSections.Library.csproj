@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\ConfigurationModel.cs" />
+    <Compile Include="Models\KeyValuePairModel.cs" />
     <Compile Include="Models\ListPropertyModel.cs" />
     <Compile Include="Models\TypeModel.cs" />
     <Compile Include="Models\ValuePropertyModel.cs" />

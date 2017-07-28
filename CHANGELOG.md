@@ -1,7 +1,8 @@
 # Road map
 
-- [x] A feature that has been completed
-- [ ] A feature that has NOT yet been completed
+- [ ] Add a Uninstall feature.
+- [ ] Allow types to be read without having to be compiled.
+- [ ] Allow the output to be flexible. (Or change how this is used to be directly from the directory and choose the interface type)
 
 Features that have a checkmark are complete and available for
 download in the
@@ -20,6 +21,4 @@ on the official Visual Studio extension gallery.
 ## 1.0
 
 - [x] Initial release
-- [x] Feature 1
-- [x] Feature 2
-  - [x] Sub feature
+- [x] Fixed a bug where the AppDomain wouldn't unload.
