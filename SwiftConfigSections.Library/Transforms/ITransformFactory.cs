@@ -3,6 +3,9 @@ using System;
 
 namespace SwiftConfigSections.Library.Transforms
 {
+    /// <summary>
+    /// Defines a factory that from a type can create a class model.
+    /// </summary>
     public interface ITransformFactory
     {
         /// <summary>

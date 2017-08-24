@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace SwiftConfigSections.Library
 {
-    public static class NamespaceModelCreator
+    public static class ConfigurationSectionModelCreator
     {
         private static readonly IEnumerable<IPropertyInfoTransform> _propertyInfoTransforms = Assembly
             .GetExecutingAssembly()
@@ -18,11 +18,22 @@ namespace SwiftConfigSections.Library
             .GetExecutingAssembly()
             .GetAllImplementationsOf<ITypeTransform>();
 
+        /// <summary>
+        /// Creates a namespace model which describes a namespace with types
+        /// that implements the dependencies of the paramterized type.
+        /// </summary>
+        /// <typeparam name="T">The type to process.</typeparam>
+        /// <returns>The constructed model.</returns>
         public static NamespaceModel CreateModel<T>()
         {
             return CreateModel(typeof(T));
         }
 
+        /// <summary>
+        /// Creates a namespace model which describes a namespace with types
+        /// that implements the dependencies of the paramterized type.
+        /// </summary>  
+        /// <returns>The constructed model.</returns>
         public static NamespaceModel CreateModel(Type type)
         {
             if (type == null)

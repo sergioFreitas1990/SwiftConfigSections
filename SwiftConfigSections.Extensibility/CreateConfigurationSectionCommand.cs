@@ -134,7 +134,8 @@ namespace SwiftConfigSections.Extensibility
             if (projectAssemblyFile == null)
             {
                 throw new InvalidOperationException(
-                    $"Could not find a .dll associated with {project.Name}!");
+                    $"Could not find a .dll associated with {project.Name}. " +
+                    $"Make sure that the project is compiled.");
             }
 
             var arguments = new GenerateTemplateArguments
@@ -150,7 +151,7 @@ namespace SwiftConfigSections.Extensibility
             var destinationDirecotry = selectedFile.Directory;
             var fileFullName = Path.Combine(
                 destinationDirecotry.FullName, 
-                $"{className.RemovePrefix("I")}Implementation.cs");
+                $"{className.RemovePrefix("I")}.cs");
             
             var templateGenerator = new Templates(T4 as ITextTemplatingSessionHost, T4);
             var fileContents = templateGenerator.CompileNamespaceTemplate(namespaceModel);
@@ -182,7 +183,7 @@ namespace SwiftConfigSections.Extensibility
             }
 
             // Generate the file from the T4 Text Template
-            var model = NamespaceModelCreator.CreateModel(interfaceType);
+            var model = ConfigurationSectionModelCreator.CreateModel(interfaceType);
             return model;
         }
 
@@ -201,6 +202,11 @@ namespace SwiftConfigSections.Extensibility
                     projectNameDll,
                     SearchOption.AllDirectories)
                 .FirstOrDefault();
+
+            if (dllFile == null)
+            {
+                return null;
+            }
 
             return new FileInfo(dllFile);
         }
