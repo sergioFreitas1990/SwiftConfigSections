@@ -1,0 +1,78 @@
+﻿<#@ template language="C#" hostspecific="True" #>
+<#@ parameter type="SwiftConfigSections.Library.TemplateModels.PropertyInfoModel" name="Model" #>
+<#@ assembly name="IndependentUtils.Tools.dll" #>
+<#@ assembly name="SwiftConfigSections.Library.dll" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="IndependentUtils.Tools.Extensions" #>
+<#@ import namespace="SwiftConfigSections.Library.TemplateModels" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Configuration" #>
+<#@ import namespace="System.Linq" #>
+<# RenderOptionalDescription(Model.Description); #>
+<# RenderPropertyAttributes(Model.Attributes); #>
+		public virtual <#= Model.PropertyType #> <#= Model.Name #>
+		{
+<# RenderBody(Model.GetterBody, Model.SetterBody); #>
+		}
+<#+
+	private void RenderBody(string getterBody, string setterBody)
+	{
+		if (!string.IsNullOrWhiteSpace(getterBody))
+		{
+#>
+			get
+			{
+				return <#= getterBody #>;
+			}
+<#+
+		}
+		if (!string.IsNullOrWhiteSpace(setterBody))
+		{
+#>
+			set
+			{
+				<#= setterBody #> = value;
+			}
+<#+
+		}
+	}
+
+	private void RenderPropertyAttributes(IEnumerable<AttributeModel> attributes)
+	{
+		if (attributes == null)
+		{
+			return;
+		}
+
+		foreach (var curr in attributes)
+		{
+#>
+		<#= curr.ToString() #>
+<#+
+		}
+	}
+#>
+<#+
+	private void RenderOptionalDescription(string description)
+	{
+		if (string.IsNullOrWhiteSpace(description))
+		{
+			return;
+		}
+
+		var descriptionLines = description.SplitText();
+#>
+		/// <summary>
+<#+
+		foreach (var currLine in descriptionLines)
+		{
+#>
+		///		<#= currLine #>
+<#+
+		}
+#>
+		/// </summary>
+<#+
+	}
+#>

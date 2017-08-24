@@ -1,0 +1,79 @@
+﻿<#@ template language="C#" hostspecific="True" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+namespace SwiftConfigSections.Library.ElementTemplates
+{
+	public class Templates
+	{
+		private readonly Microsoft.VisualStudio.TextTemplating.ITextTemplatingSessionHost _host;
+		private readonly Microsoft.VisualStudio.TextTemplating.VSHost.ITextTemplating _t4;
+
+        public Templates(Microsoft.VisualStudio.TextTemplating.ITextTemplatingSessionHost host,
+			Microsoft.VisualStudio.TextTemplating.VSHost.ITextTemplating t4)
+        {
+            _host = host;
+			_t4 = t4;
+        }
+<#
+		var elementTemplatesDirectory = new DirectoryInfo(Host.ResolvePath(""));
+		var parentDirectory = elementTemplatesDirectory.Parent;
+
+		foreach (var curr in elementTemplatesDirectory.GetFiles().Where(t => t.Extension == ".t4"))
+		{
+#>
+		public string Compile<#= curr.Name.Substring(0, curr.Name.LastIndexOf('.')) #>(<#= GetModelType(curr.FullName) #> model)
+		{
+			var templateName = "<#= curr.Name #>";
+			var template = ReadResourceFile(templateName);
+
+			return Utils.TemplateCompiler.ProcessTemplate(
+				_host, _t4, template, templateName, model);
+		}
+
+<#
+		}
+#>
+		private static string ReadResourceFile(string fileName)
+        {
+			var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            var path = string.Format("SwiftConfigSections.Library.ElementTemplates.{0}", fileName);
+
+            using (var stream = assembly.GetManifestResourceStream(path))
+            {
+                using (var reader = new System.IO.StreamReader(stream))
+                {
+                    return reader.ReadToEnd();
+                }
+            }
+        }
+	}
+}
+<#+
+	public const string ParameterPrefix = "\<#@ parameter type=\"";
+	public const string ParameterSuffix = "\" name=\"Model\" \#>";
+
+	public static string GetModelType(string filePath)
+    {
+        using (var stream = new System.IO.FileStream(filePath, System.IO.FileMode.Open))
+        {
+            using (var reader = new System.IO.StreamReader(stream))
+            {
+                var content = reader.ReadToEnd();
+
+				try
+				{
+					var indexOfPrefix = content.IndexOf(ParameterPrefix) + ParameterPrefix.Length;
+					var indexOfSuffix = content.IndexOf(ParameterSuffix, indexOfPrefix);
+					var length = indexOfSuffix - indexOfPrefix;
+					
+					return content.Substring(indexOfPrefix, length);
+				}
+				catch (Exception)
+				{
+					return "System.Object";
+				}
+            }
+        }
+    }
+#>

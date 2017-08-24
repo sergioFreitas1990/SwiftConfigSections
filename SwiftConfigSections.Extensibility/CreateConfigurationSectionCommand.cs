@@ -6,9 +6,13 @@
 
 using EnvDTE;
 using EnvDTE80;
+using IndependentUtils.Tools.Extensions;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.TextTemplating;
 using Microsoft.VisualStudio.TextTemplating.VSHost;
 using SwiftConfigSections.Library;
+using SwiftConfigSections.Library.ElementTemplates;
+using SwiftConfigSections.Library.TemplateModels;
 using System;
 using System.ComponentModel.Design;
 using System.IO;
@@ -138,19 +142,18 @@ namespace SwiftConfigSections.Extensibility
                 InterfaceName = className,
                 SelectedFileName = selectedFileName
             };
-            var templateParameters = AppDomainRunner.Run(projectAssemblyFile.FullName, arguments,
-                GenerateTemplate);
+            var namespaceModel = AppDomainRunner.Run(
+                projectAssemblyFile.FullName, 
+                arguments,
+                GenerateModel);
 
             var destinationDirecotry = selectedFile.Directory;
             var fileFullName = Path.Combine(
-                destinationDirecotry.FullName, $"{className}Implementation.cs");
-
-            var templateGenerator = new ConfigurationElementsGeneratorTemplate(
-                templateParameters.AssemblyName, 
-                templateParameters.NamespaceName,
-                templateParameters.Model
-            );
-            var fileContents = templateGenerator.Create(T4);
+                destinationDirecotry.FullName, 
+                $"{className.RemovePrefix("I")}Implementation.cs");
+            
+            var templateGenerator = new Templates(T4 as ITextTemplatingSessionHost, T4);
+            var fileContents = templateGenerator.CompileNamespaceTemplate(namespaceModel);
             File.WriteAllText(fileFullName, fileContents);
 
             // Add the project item.
@@ -164,7 +167,7 @@ namespace SwiftConfigSections.Extensibility
             public string SelectedFileName { get; set; }
         }
 
-        private static GenerateContentFromTemplateParameters GenerateTemplate(
+        private static NamespaceModel GenerateModel(
             Assembly assembly, GenerateTemplateArguments arguments)
         {
             var interfaceType = assembly
@@ -179,13 +182,8 @@ namespace SwiftConfigSections.Extensibility
             }
 
             // Generate the file from the T4 Text Template
-            var model = SectionGenerator.Generate(interfaceType);
-            return new GenerateContentFromTemplateParameters
-            {
-                AssemblyName = interfaceType.Assembly.FullName,
-                NamespaceName = interfaceType.Namespace,
-                Model = model
-            };
+            var model = NamespaceModelCreator.CreateModel(interfaceType);
+            return model;
         }
 
         /// <summary>
@@ -195,9 +193,8 @@ namespace SwiftConfigSections.Extensibility
         /// <returns>
         /// The loaded assembly or null if not found (probably not compiled).
         /// </returns>
-            public static FileInfo GetAssemblyFileFromProject(Project project)
+        public static FileInfo GetAssemblyFileFromProject(Project project)
         {
-            // TODO: Probably the AssemblyInfo file could be read instead?
             var projectNameDll = $"{project.Name}.dll";
             var dllFile = Directory
                 .GetFiles(new FileInfo(project.FullName).DirectoryName,

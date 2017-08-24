@@ -1,0 +1,31 @@
+﻿<#@ template language="C#" hostspecific="True" #>
+<#@ parameter type="SwiftConfigSections.Library.TemplateModels.NamespaceModel" name="Model" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="SwiftConfigSections.Library.dll" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating.VSHost" #>
+<#@ import namespace="SwiftConfigSections.Library.TemplateModels" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Configuration" #>
+<#@ import namespace="System.Linq" #>
+namespace <#= Model.Namespace #>
+{
+<# RenderClasses(Model.Classes); #>
+}
+<#+
+    public void RenderClasses(IEnumerable<ClassModel> values)
+    {
+		if (values == null)
+		{
+			throw new ArgumentNullException("values");
+		}
+
+		foreach (var curr in values)
+		{
+#>
+<#= curr.ToString((ITextTemplatingSessionHost)Host, (ITextTemplating)Host) #>
+<#+
+		}
+    }
+#>

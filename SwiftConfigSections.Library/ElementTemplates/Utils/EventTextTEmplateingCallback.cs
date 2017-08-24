@@ -1,13 +1,15 @@
 ﻿using Microsoft.VisualStudio.TextTemplating.VSHost;
+using System;
 using System.Text;
 
-namespace SwiftConfigSections.Extensibility
+namespace SwiftConfigSections.Library.ElementTemplates.Utils
 {
     /// <summary>
     /// An implementation of the ITextTemplatingCallback interface that uses event
     /// handlers instead of methods.
     /// </summary>
-    public class EventTextTEmplateingCallback : ITextTemplatingCallback
+    [Serializable]
+    public class EventTextTemplateingCallback : ITextTemplatingCallback
     {
         public delegate void ErrorCallbackEvent(bool warning, string message, int line, int column);
         public delegate void SetFileExtensionEvent(string extension);

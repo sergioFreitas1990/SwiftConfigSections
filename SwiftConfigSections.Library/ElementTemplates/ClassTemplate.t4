@@ -1,0 +1,69 @@
+﻿<#@ template language="C#" hostspecific="True" #>
+<#@ parameter type="SwiftConfigSections.Library.TemplateModels.ClassModel" name="Model" #>
+<#@ assembly name="IndependentUtils.Tools.dll" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="SwiftConfigSections.Library.dll" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating.VSHost" #>
+<#@ import namespace="SwiftConfigSections.Library.TemplateModels" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Configuration" #>
+<#@ import namespace="System.Linq" #>
+<# RenderClassDescription(Model); #>
+<# RenderAttributes(Model.Attributes); #>
+	public class <#= Model.Name #> : <#= RenderExtensions(Model.BaseType, Model.Interfaces) #>
+	{
+<# RenderProperties(Model.Properties); #>
+	}
+<#+
+	public string RenderExtensions(string baseType, IEnumerable<string> interfaces)
+	{
+		var combinedExtensions = new [] { baseType }.Concat(interfaces);
+		return string.Join(", ", combinedExtensions);
+	}
+
+	public void RenderAttributes(IEnumerable<AttributeModel> values)
+	{
+		foreach (var curr in values)
+		{
+#>
+	<#= curr.ToString() #>
+<#+
+		}
+	}
+#>
+<#+
+	
+	public void RenderProperties(IEnumerable<PropertyInfoModel> values)
+	{
+		if (values == null)
+		{
+			throw new ArgumentNullException("values");
+		}
+
+		foreach (var currProperty in values)
+		{
+#>
+<#= currProperty.ToString((ITextTemplatingSessionHost)Host, (ITextTemplating)Host) #>
+<#+
+		}
+	}
+
+	public void RenderClassDescription(ClassModel value)
+	{
+		if (value == null)
+		{
+			throw new ArgumentNullException("value");
+		}
+
+		if (!string.IsNullOrWhiteSpace(value.Description))
+		{
+#>
+	/// <summary>
+	/// <#= value.Description #>
+	/// </summary>
+<#+
+		}
+	}
+#>
