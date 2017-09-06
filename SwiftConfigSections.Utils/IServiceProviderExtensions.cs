@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TextTemplating.VSHost;
+using System;
 
-namespace SwiftConfigSections.Extensibility
+namespace SwiftConfigSections.Utils
 {
     public static class IServiceProviderExtensions
     {
@@ -12,7 +13,12 @@ namespace SwiftConfigSections.Extensibility
                 throw new ArgumentNullException(nameof(serviceProvider));
             }
 
-            return (TServiceInterface)serviceProvider.GetService(typeof(TServiceType));
+            var service = serviceProvider.GetService(typeof(TServiceType));
+            if (service == null)
+            {
+                return default(TServiceInterface);
+            }
+            return (TServiceInterface) service;
         }
 
         public static TServiceInterface GetService<TServiceInterface>(
@@ -24,6 +30,16 @@ namespace SwiftConfigSections.Extensibility
             }
 
             return serviceProvider.GetService<TServiceInterface, TServiceInterface>();
+        }
+
+        public static ITextTemplating GetT4(this IServiceProvider serviceProvider)
+        {
+            if (serviceProvider == null)
+            {
+                throw new ArgumentNullException(nameof(serviceProvider));
+            }
+
+            return serviceProvider.GetService<STextTemplating, ITextTemplating>();
         }
     }
 }

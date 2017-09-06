@@ -55,7 +55,6 @@
     <Compile Include="AppDomainRunner.cs" />
     <Compile Include="CreateConfigurationSectionCommand.cs" />
     <Compile Include="CreateConfigurationSectionCommandPackage.cs" />
-    <Compile Include="IServiceProviderExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -205,6 +204,10 @@
     <ProjectReference Include="..\SwiftConfigSections.Library\SwiftConfigSections.Library.csproj">
       <Project>{1b9e59b1-a578-4410-93d6-515f1aa649fe}</Project>
       <Name>SwiftConfigSections.Library</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SwiftConfigSections.Utils\SwiftConfigSections.Utils.csproj">
+      <Project>{409979eb-bfd0-4403-b4cc-0bcb41e79599}</Project>
+      <Name>SwiftConfigSections.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -13,6 +13,7 @@ using Microsoft.VisualStudio.TextTemplating.VSHost;
 using SwiftConfigSections.Library;
 using SwiftConfigSections.Library.ElementTemplates;
 using SwiftConfigSections.Library.TemplateModels;
+using SwiftConfigSections.Utils;
 using System;
 using System.ComponentModel.Design;
 using System.IO;
@@ -88,8 +89,7 @@ namespace SwiftConfigSections.Extensibility
         /// </summary>
         private IServiceProvider ServiceProvider => _package;
 
-        private ITextTemplating T4 => ServiceProvider
-            .GetService<STextTemplating, ITextTemplating>();
+        private ITextTemplating T4 => ServiceProvider.GetT4();            
 
         private DTE2 Dte => ServiceProvider
             .GetService<DTE, DTE2>();
