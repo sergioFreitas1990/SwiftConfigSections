@@ -43,6 +43,9 @@
     <Reference Include="IndependentUtils.Configuration, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8524f01e88c6813d, processorArchitecture=MSIL">
       <HintPath>..\packages\AbstractedAppConfig.1.0.0\lib\net461\IndependentUtils.Configuration.dll</HintPath>
     </Reference>
+    <Reference Include="IndependentUtils.Tools, Version=1.0.0.0, Culture=neutral, PublicKeyToken=046e6c5ca23ed36c, processorArchitecture=MSIL">
+      <HintPath>..\packages\IndependentUtils.Tools.1.0.0\lib\net461\IndependentUtils.Tools.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.TextTemplating.15.0, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.TextTemplating.Interfaces.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
@@ -80,12 +83,6 @@
     <Compile Include="Transforms\TransformFactory.cs" />
     <Compile Include="Transforms\Utils.cs" />
     <Compile Include="TemplateModels\ValueModel.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\IndependentUtils\IndependentUtils.Tools\IndependentUtils.Tools.csproj">
-      <Project>{22CF7B28-1BB9-4A8A-9992-3483BB8D9035}</Project>
-      <Name>IndependentUtils.Tools</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ElementTemplates\ClassTemplate.t4" />
