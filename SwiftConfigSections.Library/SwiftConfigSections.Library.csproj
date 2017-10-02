@@ -37,6 +37,12 @@
     <AssemblyOriginatorKeyFile>KeyFile.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Enums.NET, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7ea1c1650d506225, processorArchitecture=MSIL">
+      <HintPath>..\packages\Enums.NET.2.2.0\lib\net45\Enums.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="IndependentUtils.Configuration, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8524f01e88c6813d, processorArchitecture=MSIL">
+      <HintPath>..\packages\AbstractedAppConfig.1.0.0\lib\net461\IndependentUtils.Configuration.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.TextTemplating.15.0, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.TextTemplating.Interfaces.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
@@ -76,10 +82,6 @@
     <Compile Include="TemplateModels\ValueModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\IndependentUtils\IndependentUtils.Configuration\IndependentUtils.Configuration.csproj">
-      <Project>{b3bdcbcd-a1d7-47a9-b991-1e2b0b8e0321}</Project>
-      <Name>IndependentUtils.Configuration</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\IndependentUtils\IndependentUtils.Tools\IndependentUtils.Tools.csproj">
       <Project>{22CF7B28-1BB9-4A8A-9992-3483BB8D9035}</Project>
       <Name>IndependentUtils.Tools</Name>
@@ -90,6 +92,7 @@
     <EmbeddedResource Include="ElementTemplates\PropertyTemplate.t4" />
     <EmbeddedResource Include="ElementTemplates\NamespaceTemplate.t4" />
     <None Include="KeyFile.snk" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ElementTemplates\Templates.tt">
