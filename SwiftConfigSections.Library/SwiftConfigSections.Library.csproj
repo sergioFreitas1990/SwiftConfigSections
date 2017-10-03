@@ -37,9 +37,6 @@
     <AssemblyOriginatorKeyFile>KeyFile.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Enums.NET, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7ea1c1650d506225, processorArchitecture=MSIL">
-      <HintPath>..\packages\Enums.NET.2.2.0\lib\net45\Enums.NET.dll</HintPath>
-    </Reference>
     <Reference Include="IndependentUtils.Configuration, Version=1.0.0.0, Culture=neutral, PublicKeyToken=8524f01e88c6813d, processorArchitecture=MSIL">
       <HintPath>..\packages\AbstractedAppConfig.1.0.0\lib\net461\IndependentUtils.Configuration.dll</HintPath>
     </Reference>
